@@ -1,4 +1,4 @@
-# sluzebnicek
+# Služebníček 2.D
 Služebníček pro třídu 2.D na SPŠE Pardubice.
 ## Studentský projekt
 Tento projekt je pouze studentský. Mám vlastní drive do toho dávat čas a rád se něco u toho naučím.
