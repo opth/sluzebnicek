@@ -28,6 +28,7 @@ $predmety = [
   "PG",
   "FY",
   "CT",
+  "OZ",
   "EN",
   "IN",
   "OS",
