@@ -10,6 +10,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     require('pridej-model.php');
     if (pridej_do_db2($newTask)) {
       require('pridano-view.html');
+      require('logger.php');
+      logAddition($newTask);
       exit;
     } else {
       $errorMessage = "Error úkol nebyl přidán";
