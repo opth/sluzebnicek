@@ -1,8 +1,11 @@
 <?php
+require('logger.php');
 $db = new SQLite3('data.sqlite');
+$logger = new Logger();
 
 function pridej_do_db2($newTask) {
   global $db;
+  global $logger;
 
   $stmt = $db->prepare('INSERT INTO ukoly(predmet, popis, datum_zadani, datum_odevzdani, typ_zaznamu, skupina) VALUES (?,?,?,?,?,?)');
 
@@ -21,6 +24,7 @@ function pridej_do_db2($newTask) {
   $stmt->bindValue(6, $newTask['skupina']);
 
   if ($stmt->execute()) {
+    $logger->addLog($newTask);
     return true;
   } else {
     return false;
