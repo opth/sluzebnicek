@@ -50,7 +50,7 @@ class Logger {
     $stmt->bindValue(1, $ipa);
     $stmt->bindValue(2, $ted->format("Y-m-d\ H:i:s.u"));
     $stmt->bindValue(3, "add");
-    $message = $id . ", " . $newTask['predmet'] . ", " . $newTask['datum_zadani'] . ", " . $newTask['datum_odevzdani'] . ", " . $newTask['typ_zaznamu'] . ', ' . $newTask['skupina'];
+    $message = $id . ", " . $newTask['predmet'] . ", " . $newTask['popis'] . ", " . $newTask['datum_zadani'] . ", " . $newTask['datum_odevzdani'] . ", " . $newTask['typ_zaznamu'] . ', ' . $newTask['skupina'];
     $stmt->bindValue(4, $message);
 
     if ($stmt->execute()) {
