@@ -17,7 +17,7 @@ class Logger {
         $ip_address = $_SERVER['REMOTE_ADDR'];
       }
     if ($ip_address == "::1" || $ip_address == "127.0.0.1") {
-      return "localhost";
+      return "localhost(" . $ip_address . ")" ;
     } else {
       return $ip_address;    
     }
@@ -41,14 +41,16 @@ class Logger {
   public function addLog($newTask) {
     global $db;
     global $ted;
+
+    $res = ($db->query("SELECT id FROM ukoly ORDER BY id DESC LIMIT 1;"))->fetchArray();
+    $id = $res['id'];
+
     $ipa = (string)$this->getClientIP();
-    var_dump($this->getClientIP());
-    var_dump($ipa);
     $stmt = $db->prepare('INSERT INTO logs (ip, timeofaction, act, msg) VALUES(?,?,?,?)');
     $stmt->bindValue(1, $ipa);
     $stmt->bindValue(2, $ted->format("Y-m-d\ H:i:s.u"));
     $stmt->bindValue(3, "add");
-    $message = $newTask['predmet'] . ", " . $newTask['datum_zadani'] . ", " . $newTask['datum_odevzdani'] . ", " . $newTask['typ_zaznamu'] . ', ' . $newTask['skupina'];
+    $message = $id . ", " . $newTask['predmet'] . ", " . $newTask['datum_zadani'] . ", " . $newTask['datum_odevzdani'] . ", " . $newTask['typ_zaznamu'] . ', ' . $newTask['skupina'];
     $stmt->bindValue(4, $message);
 
     if ($stmt->execute()) {
@@ -57,6 +59,10 @@ class Logger {
       return false;
     }
   } 
+
+  public function deleteLog() {
+    #to be continued
+  }
 
 }
 ?>
