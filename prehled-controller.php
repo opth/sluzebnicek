@@ -7,7 +7,6 @@ TODO:
 . responzivita
 */
 
-
 function verze_sqlite() {
   global $db;
   $version = $db->querySingle('SELECT SQLITE_VERSION()');
@@ -75,6 +74,12 @@ function nadchazejici_ukoly() {
 
   return $ukoly;
 }
+
+
+
+require('logger.php');
+$logger1 = new Logger();
+$logger1->getLog();
 
 require('prehled-view.php')
 ?>
