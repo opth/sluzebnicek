@@ -76,7 +76,5 @@ function nadchazejici_ukoly() {
   return $ukoly;
 }
 
-require('logger.php');
-logGet();
 require('prehled-view.php')
 ?>
