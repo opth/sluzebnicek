@@ -38,11 +38,11 @@ function blackbox_na_sluzby($skolni_tyden, $tydnu_od_tehdy) {
 
   $tyd = $tydnu_od_tehdy%15;
   $res = $db->query("SELECT id, skupina, jmeno FROM sluzby WHERE skupina=1 ORDER BY id LIMIT 1 OFFSET '$tyd'");
-  $sk1_sluzbic = $res->fetchArray();
+  $sk1_sluzbic = $res->fetchArray(1);
 
   $tyd = $tydnu_od_tehdy%14;
   $res = $db->query("SELECT id, skupina, jmeno FROM sluzby WHERE skupina=2 ORDER BY id LIMIT 1 OFFSET '$tyd'");
-  $sk2_sluzbic = $res->fetchArray();
+  $sk2_sluzbic = $res->fetchArray(1);
 
   if ($skolni_tyden) {
     return $sk1_sluzbic['jmeno'] . " a " . $sk2_sluzbic['jmeno'] . "<br><p id='lilp'>od " . date("d.m.Y", strtotime('monday this week')) . "</p>";
@@ -56,9 +56,9 @@ function nadchazejici_ukoly() {
 
   $ukoly = [];
 
-  $res = $db->query("SELECT id, predmet, popis, datum_odevzdani, datum_zadani, skupina, typ_zaznamu FROM ukoly WHERE datum_odevzdani >= date('now') ORDER BY datum_odevzdani ASC");
+  $res = $db->query("SELECT id, predmet, popis, datum_zadani, datum_odevzdani, skupina, typ_zaznamu FROM ukoly WHERE datum_odevzdani >= date('now') ORDER BY datum_odevzdani ASC");
 
-  while ($row = $res->fetchArray()) {
+  while ($row = $res->fetchArray(1)) {
     array_push($ukoly, $row);
   }
 

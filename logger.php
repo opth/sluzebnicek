@@ -30,7 +30,7 @@ class Logger {
     $stmt = $db->prepare('INSERT INTO getLogs(ip, timeofaction) VALUES (?,?)');
     $stmt->bindValue(1, $this->getClientIP());
     $stmt->bindValue(2, $ted->format("Y-m-d\ H:i:s.u"));
-    
+      
     if ($stmt->execute()) {
       return true;
     } else {
@@ -64,5 +64,38 @@ class Logger {
     #to be continued
   }
 
+  public function getGetLogs($limit) {
+    global $db;
+    $logs = [];
+    $str = "";
+
+    $res = $db->query('SELECT * FROM getLogs LIMIT ' . $limit);
+    echo "<link href='style.css' rel='stylesheet'>";
+    echo "<table>";
+    #echo "<table><th>ID</th><th>IP</th><th>TimeDate</th>";
+    while ($row = $res->fetchArray()) {
+      #echo ("<tr><td>" .  $row['id'] . "</td><td>" . $row['ip'] . "</td><td>" . $row['timeofaction'] . "</td></tr>");
+      require('./table.php');
+      usleep(50);
+    }
+    #echo $str;  
+    echo "</table>";
+    
+  }
+
+}
+
+if($_SERVER['REQUEST_METHOD'] == 'POST') {
+  if($_POST['passwd'] == "abcd") {
+    $logger = new Logger;
+    $logger->getGetLogs($_POST['limit']);
+  } else {
+    echo "incorrect password, reload";
+  }
+} elseif ($_SERVER['REQUEST_METHOD'] == 'GET') {
+  if(@$_GET['logs'] == "yes") {
+    require('logger.html');
+    exit();
+  }
 }
 ?>
