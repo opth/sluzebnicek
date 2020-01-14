@@ -64,6 +64,7 @@ class Logger {
     #to be continued
   }
 
+  #this is broken
   public function getGetLogs($limit) {
     global $db;
     $logs = [];
@@ -85,7 +86,7 @@ class Logger {
 
 }
 
-if($_SERVER['REQUEST_METHOD'] == 'POST') {
+if($_SERVER['REQUEST_METHOD'] == 'POST' && @$_SERVER['logs'] == 'yy') {
   if($_POST['passwd'] == "abcd") {
     $logger = new Logger;
     $logger->getGetLogs($_POST['limit']);

@@ -1,22 +1,7 @@
 <?php 
 $db = new SQLite3('data.sqlite');
 $errorMessage = null;
-$predmety = [
-  "ČJ",
-  "MA",
-  "AJ",
-  "WA",
-  "SV",
-  "PG",
-  "FY",
-  "CT",
-  "OZ",
-  "EN",
-  "IN",
-  "OS",
-  "PX",
-  "TV",
-];
+$predmety = ["ČJ","MA","AJ","WA","SV","PG","FY","CT","OZ","EN","IN","OS","PX","TV"];
 
 $g = $_GET;
 
