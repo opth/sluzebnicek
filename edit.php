@@ -1,5 +1,5 @@
 <?php 
-$db = new SQLite3('data.sqlite');
+$db = new SQLite3('./data.sqlite');
 $errorMessage = null;
 $predmety = ["ČJ","MA","AJ","WA","SV","PG","FY","CT","OZ","EN","IN","OS","PX","TV"];
 
@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   if (array_key_exists('id', $g)) {
     $newTask = vyber_podle_id($_GET['id']);
 
-    require('edit-view.php');
+    require('./php/edit-view.php');
   } else {
     echo "<h1>Error: cybí parametr id</h1>";
   }
@@ -70,11 +70,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       zmen_zaznam($p, $preId, false);
     }
 
-    require('zmeneno-view.html');
+    require('./html/zmeneno-view.html');
   } else {
     $newTask = $p;
     $errorMessage = "neplatné heslo";
-    require('pridej-view.php');
+    require('./php/pridej-view.php');
   }
   
 }

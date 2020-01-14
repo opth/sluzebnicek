@@ -77,9 +77,9 @@ function nadchazejici_ukoly() {
 
 
 
-require('logger.php');
+require('./php/logger.php');
 $logger1 = new Logger();
 $logger1->getLog();
 
-require('prehled-view.php')
+require('./php/prehled-view.php')
 ?>

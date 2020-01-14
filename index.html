@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  <script src="./dist/app.js"></script>
+  <!-- Start Vue -->
+  <div id="app">
+    <comp v-for="item in items" :key="item.id" :item="item"></comp>
+  </div>
+</body>
+</html>

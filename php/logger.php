@@ -1,5 +1,5 @@
 <?php 
-$db = new SQLite3('data.sqlite');
+#$db = new SQLite3('../data.sqlite');
 $ted = new DateTime('now');  
 
 class Logger {
@@ -24,18 +24,18 @@ class Logger {
   }
   
   public function getLog() {
-    global $db;
-    global $ted;
+    // global $db;
+    // global $ted;
     
-    $stmt = $db->prepare('INSERT INTO getLogs(ip, timeofaction) VALUES (?,?)');
-    $stmt->bindValue(1, $this->getClientIP());
-    $stmt->bindValue(2, $ted->format("Y-m-d\ H:i:s.u"));
+    // $stmt = $db->prepare('INSERT INTO getLogs(ip, timeofaction) VALUES (?,?)');
+    // $stmt->bindValue(1, $this->getClientIP());
+    // $stmt->bindValue(2, $ted->format("Y-m-d\ H:i:s.u"));
       
-    if ($stmt->execute()) {
-      return true;
-    } else {
-      return false;
-    }
+    // if ($stmt->execute()) {
+    //   return true;
+    // } else {
+    //   return false;
+    // }
   }
   
   public function addLog($newTask) {
@@ -95,7 +95,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && @$_SERVER['logs'] == 'yy') {
   }
 } elseif ($_SERVER['REQUEST_METHOD'] == 'GET') {
   if(@$_GET['logs'] == "yes") {
-    require('logger.html');
+    require('../html/logger.html');
     exit();
   }
 }

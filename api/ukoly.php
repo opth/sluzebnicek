@@ -31,6 +31,10 @@ function addTask($json) {
   global $now;
   $resp = (object)[];
   $predmety = ["ČJ","MA","AJ","WA","SV","PG","FY","CT","OZ","EN","IN","OS","PX","TV"];
+  if (!in_array($json->predmet, $predmety)) {
+    sendErrorMessage("predmet is wrong");
+    return;
+  }
 
   $stmt = $db->prepare('INSERT INTO ukoly(predmet, popis, datum_zadani, datum_odevzdani, typ_zaznamu, skupina) VALUES (?,?,?,?,?,?)');
   $stmt->bindValue(1, $json->predmet);
@@ -44,12 +48,11 @@ function addTask($json) {
     $resp->status = "success";
     $resp->timeDate = $now->format("Y-m-d\ H:i:s.u");
     $resp->newTask = $json;
-  } else {
-    $resp->status = "error";
-    $resp->timeDate = $now->format("Y-m-d\ H:i:s.u");  
-  }
 
-  echo(json_encode($resp));
+    echo(json_encode($resp));
+  } else {
+    sendErrorMessage(""); 
+  }  
 }
 
 function editTask($json) {
@@ -57,7 +60,18 @@ function editTask($json) {
   global $now;
   $resp = (object)[];
 
-  $q = $db->query('SELECT EXISTS(SELECT 1 FROM myTbl WHERE u_tag=' . $json->id);
+  if (!isset($json->id)) {
+    sendErrorMessage("id not specified");
+    return;
+  }
+
+  $q = $db->prepare('SELECT EXISTS(SELECT 1 FROM ukoly WHERE id=:id)');
+  $q->bindValue(':id', $json->id);
+  $temp = $q->execute();
+  if ($temp->fetchArray()['0'] == 0) {
+    sendErrorMessage("id does not exist");
+    return;
+  }
   
   $stmt = $db->prepare('UPDATE ukoly SET (predmet,popis,datum_odevzdani,datum_zadani,typ_zaznamu,skupina)=(:predmet,:popis,:datum_odevzdani,:datum_zadani,:typ_zaznamu,:skupina) WHERE id=:id');
   $stmt->bindValue(':id', $json->id);
@@ -72,18 +86,18 @@ function editTask($json) {
     $resp->status = "success";
     $resp->timeDate = $now->format("Y-m-d\ H:i:s.u");
     $resp->updated = $json;
+
+    echo(json_encode($resp));
   } else {
-    $resp->status = "error";
-    $resp->timeDate = $now->format("Y-m-d\ H:i:s.u");  
+    sendErrorMessage("");  
   }
   
-  echo(json_encode($resp));
 }
 
-if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-  getTasks();
-} elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
-  $json = json_decode(file_get_contents('php://input'));
+function postHandler($postJson) {
+  global $now;
+  $resp = (object)[];
+  $json = json_decode($postJson);
   
   if (isset($json->action)) {
     if ($json->action == "add") {
@@ -91,14 +105,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     } elseif ($json->action == "edit") {
       editTask($json);  
     } else {
-      $resp = (object)[];
-      $resp->status = "error";
-      $resp->errorMessage = "unknown action";
-      $resp->timeDate = $now->format("Y-m-d\ H:i:s.u");
-      echo(json_encode($resp)); 
+      sendErrorMessage("unknown action");
     }
   } else {
-
+    sendErrorMessage("action not specified");
   }
+  
+}
+
+function sendErrorMessage($errMsg) {
+  global $now;
+  $resp = (object)[];
+  $resp->status = "error";
+  if ($errMsg != "") {
+    $resp->errorMessage = $errMsg;
+  }
+  $resp->timeDate = $now->format("Y-m-d\ H:i:s.u"); 
+  
+  echo(json_encode($resp));
+}
+
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+  getTasks();
+} elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
+  postHandler(file_get_contents('php://input'));
 }
 ?>
+<!-- ADD SECURITTY -->

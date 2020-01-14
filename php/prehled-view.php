@@ -34,7 +34,7 @@
             <th>Skupina</th>
             <th>Typ záznamu</th>
           </tr>
-          <?= foreach_require(nadchazejici_ukoly(), 'prehled-tr-ukol.php') ?>
+          <?= foreach_require(nadchazejici_ukoly()) ?>
         </table>
       </div>
     </div>
